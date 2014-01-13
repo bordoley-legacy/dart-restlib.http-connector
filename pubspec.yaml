@@ -1,5 +1,5 @@
 name: restlib_http_connector
-description: A sample command-line application
+description: library for binding restlib applications to dart's HTTP server
 dependencies:
   logging: any
   restlib_common:
