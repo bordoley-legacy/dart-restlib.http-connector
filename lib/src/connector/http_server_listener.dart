@@ -114,7 +114,10 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
           path: serverRequest.uri.path,
           query: serverRequest.uri.query));
   
-  final Request request = new Request.wrapHeaders(new _HttpHeadersAsAssociative(serverRequest.headers), method, requestUri);
+  Iterable<String> getHeader(final Header header) =>
+      firstNotNull(serverRequest.headers[header.toString()], Option.NONE);
+  
+  final Request request = new Request.wrapHeaders(getHeader, method, requestUri);
   
   _logger.finest(request.toString());
   
@@ -126,38 +129,4 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
             serverRequest.response.close();
           })
       .catchError(_logError);
-}
-
-class _HttpHeadersAsAssociative implements Associative<String,String> {
-  final HttpHeaders delegate;
-  
-  _HttpHeadersAsAssociative(this.delegate);
-  
-  Iterable<String> get keys;
-  Iterable<String> get values;
-  
-  Iterable<String> operator[](final String key) =>
-      firstNotNull(delegate[key], Option.NONE);
-  
-  bool containsKey(final String key) {
-    bool retval = false;
-    delegate.forEach((final String name, final List<String> values) {
-      if (key.toLowerCase() == name.toLowerCase()) {
-        retval = true;
-      }
-      return retval;
-    });
-    
-  }
-  bool containsValue(final String value) {
-    bool retval = false;
-    delegate.forEach((final String name, final List<String> values) {
-      if (values.contains(value)) {
-        retval = true;
-      }
-    });
-    return retval;    
-  }
-  
-  Associative<String,dynamic> mapValues(mapFunc(String value));
 }
