@@ -20,7 +20,7 @@ Response _internalServerError(final e) {
   ).build();
 }
 
-HttpServerListener httpServerListener(Application applicationSupplier(request), final String scheme) =>
+HttpServerListener httpServerListener(Application applicationSupplier(Request request), final String scheme) =>
     (final HttpServer server) {  
       _logger.info("Listening on port: ${server.port}");
 
@@ -30,7 +30,7 @@ HttpServerListener httpServerListener(Application applicationSupplier(request), 
     };
 
 @visibleForTesting
-Future processRequest(final HttpRequest serverRequest, Application applicationSupplier(request), final String scheme) {  
+Future processRequest(final HttpRequest serverRequest, Application applicationSupplier(Request request), final String scheme) {  
   Future _writeResponse(final Request request, final Response response, Future write(Request request, Response response, StreamSink<List<int>> msgSink)) {
     checkNotNull(response);
     
