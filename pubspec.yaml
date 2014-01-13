@@ -6,8 +6,6 @@ dependencies:
     git: https://code.google.com/p/dart-restlib.common/
   restlib_core:
     git: https://code.google.com/p/dart-restlib.core/
-  restlib_parsing:
-    git: https://code.google.com/p/dart-restlib.parsing/
   restlib_server:
     git: https://code.google.com/p/dart-restlib.server/
 dev_dependencies:

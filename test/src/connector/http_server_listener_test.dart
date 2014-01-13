@@ -50,9 +50,9 @@ void _testProcessRequest(final ApplicationSupplier applicationSupplier, final St
         .verify(happenedOnce));
 }
 
-IOApplicationSupplier _applicationSupplierFor(final IOResource resource) =>
+ApplicationSupplier _applicationSupplierFor(final IOResource resource) =>
     (final Request request) =>
-        new IOApplication([resource]);
+        new Application([resource]);
 
 void httpServerListenerTestGroup() {
   group("class:RequestProcessor", () {
@@ -61,7 +61,7 @@ void httpServerListenerTestGroup() {
           new MockRoute()
             ..when(callsTo("matches")).alwaysReturn(true);
       
-      test("with IOApplication supplier throwing exception", () =>
+      test("with Application supplier throwing exception", () =>
           _testProcessRequest((final Request request) => throw new Error(), Status.SERVER_ERROR_INTERNAL));
       
       test("with Resource.handle() method throwing an exception and IOApplication.filterResponse() throwing an exception", () {
@@ -69,8 +69,8 @@ void httpServerListenerTestGroup() {
             new MockIOResource()
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysThrow(new Error());
-        final IOApplication application =
-            new MockIOApplication()
+        final Application application =
+            new MockApplication()
               ..when(callsTo("route")).alwaysReturn(resource)
               ..when(callsTo("filterRequest")).alwaysCall((final Request request) => request)
               ..when(callsTo("filterResponse")).alwaysThrow(new Error())
@@ -85,7 +85,7 @@ void httpServerListenerTestGroup() {
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysReturn(SUCCESS_OK);
         
-        final IOApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
+        final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
         
         _testProcessRequest(applicationSupplier, Status.SUCCESS_OK);
       });
@@ -96,7 +96,7 @@ void httpServerListenerTestGroup() {
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysThrow(new Error());
 
-        final IOApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
+        final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
         
         _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
       });
@@ -108,7 +108,7 @@ void httpServerListenerTestGroup() {
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysCall((a) => new Future.error(new Error()));
         
-        final IOApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
+        final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
         
         _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
       });
@@ -120,7 +120,7 @@ void httpServerListenerTestGroup() {
               ..when(callsTo("handle")).alwaysReturn(INFORMATIONAL_CONTINUE)
               ..when(callsTo("parse")).alwaysThrow(new Error());
 
-        final IOApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
+        final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
         
         _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
       });
@@ -132,7 +132,7 @@ void httpServerListenerTestGroup() {
               ..when(callsTo("handle")).alwaysReturn(INFORMATIONAL_CONTINUE)
               ..when(callsTo("parse")).alwaysCall((a,b) => new Future.error(new Error()));
 
-        final IOApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
+        final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
         
         _testProcessRequest(applicationSupplier, Status.CLIENT_ERROR_BAD_REQUEST);
       });
@@ -145,7 +145,7 @@ void httpServerListenerTestGroup() {
               ..when(callsTo("parse")).alwaysReturn(new Future.value(_requestWithEntity()))
               ..when(callsTo("acceptMessage")).alwaysThrow(new Error());
 
-        final IOApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
+        final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
         
         _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
       });
@@ -158,7 +158,7 @@ void httpServerListenerTestGroup() {
               ..when(callsTo("parse")).alwaysReturn(new Future.value(_requestWithEntity()))
               ..when(callsTo("acceptMessage")).alwaysCall((a,b) => new Future.error(new Error()));
 
-        final IOApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
+        final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
         
         _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
       });
@@ -171,7 +171,7 @@ void httpServerListenerTestGroup() {
               ..when(callsTo("parse")).alwaysReturn(new Future.value(_requestWithEntity()))
               ..when(callsTo("acceptMessage")).alwaysReturn(SUCCESS_OK);
 
-        final IOApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
+        final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource); 
         
         _testProcessRequest(applicationSupplier, Status.SUCCESS_OK);
       });

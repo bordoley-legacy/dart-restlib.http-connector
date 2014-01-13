@@ -1,6 +1,5 @@
 part of restlib.connector.http;
 
-typedef IOApplication IOApplicationSupplier(Request);
 typedef HttpServerListener(HttpServer);
 
 final Logger _logger = new Logger("restlib.connector.connector");
@@ -21,7 +20,7 @@ Response _internalServerError(final e) {
   ).build();
 }
 
-HttpServerListener httpServerListener(final IOApplicationSupplier applicationSupplier, final String scheme) =>
+HttpServerListener httpServerListener(Application applicationSupplier(request), final String scheme) =>
     (final HttpServer server) {  
       _logger.info("Listening on port: ${server.port}");
 
@@ -31,7 +30,7 @@ HttpServerListener httpServerListener(final IOApplicationSupplier applicationSup
     };
 
 @visibleForTesting
-Future processRequest(final HttpRequest serverRequest, final IOApplicationSupplier applicationSupplier, final String scheme) {  
+Future processRequest(final HttpRequest serverRequest, Application applicationSupplier(request), final String scheme) {  
   Future _writeResponse(final Request request, final Response response, Future write(Request request, Response response, StreamSink<List<int>> msgSink)) {
     checkNotNull(response);
     
@@ -50,7 +49,7 @@ Future processRequest(final HttpRequest serverRequest, final IOApplicationSuppli
     Future<Response> response;
     
     try {
-      final IOApplication application = applicationSupplier(request);
+      final Application application = applicationSupplier(request);
       
       try {
         request = application.filterRequest(request);
@@ -101,7 +100,22 @@ Future processRequest(final HttpRequest serverRequest, final IOApplicationSuppli
   
   _logger.finest("Received request from ${serverRequest.connectionInfo.remoteAddress}");
   
-  final Request request = wrapHttpRequest(serverRequest, scheme);
+  final Method method = new Method.forName(serverRequest.method);
+  
+  // this is terribly hacky, but dart's URI class sucks.
+  // FIXME: what if host is empty?
+  final String host = nullToEmpty(serverRequest.headers.value(HttpHeaders.HOST));
+  final Uri hostPort = Uri.parse("//" + host);
+  final Uri requestUri = new RoutableUri.wrap(
+      new Uri(
+          scheme: scheme,
+          host: hostPort.host, 
+          port: hostPort.port,
+          path: serverRequest.uri.path,
+          query: serverRequest.uri.query));
+  
+  final Request request = new Request.wrapHeaders(new _HttpHeadersAsAssociative(serverRequest.headers), method, requestUri);
+  
   _logger.finest(request.toString());
   
   return _doProcessRequest(request)
@@ -112,4 +126,38 @@ Future processRequest(final HttpRequest serverRequest, final IOApplicationSuppli
             serverRequest.response.close();
           })
       .catchError(_logError);
+}
+
+class _HttpHeadersAsAssociative implements Associative<String,String> {
+  final HttpHeaders delegate;
+  
+  _HttpHeadersAsAssociative(this.delegate);
+  
+  Iterable<String> get keys;
+  Iterable<String> get values;
+  
+  Iterable<String> operator[](final String key) =>
+      firstNotNull(delegate[key], Option.NONE);
+  
+  bool containsKey(final String key) {
+    bool retval = false;
+    delegate.forEach((final String name, final List<String> values) {
+      if (key.toLowerCase() == name.toLowerCase()) {
+        retval = true;
+      }
+      return retval;
+    });
+    
+  }
+  bool containsValue(final String value) {
+    bool retval = false;
+    delegate.forEach((final String name, final List<String> values) {
+      if (values.contains(value)) {
+        retval = true;
+      }
+    });
+    return retval;    
+  }
+  
+  Associative<String,dynamic> mapValues(mapFunc(String value));
 }
