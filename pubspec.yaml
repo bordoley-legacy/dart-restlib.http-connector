@@ -1,0 +1,15 @@
+name: restlib_http_connector
+description: A sample command-line application
+dependencies:
+  logging: any
+  restlib_common:
+    git: https://code.google.com/p/dart-restlib.common/
+  restlib_core:
+    git: https://code.google.com/p/dart-restlib.core/
+  restlib_parsing:
+    git: https://code.google.com/p/dart-restlib.parsing/
+  restlib_server:
+    git: https://code.google.com/p/dart-restlib.server/
+dev_dependencies:
+  restlib_testing:
+    git: https://code.google.com/p/dart-restlib.testing/
