@@ -1,10 +1,13 @@
 library restlib.connector.http;
 
 import "dart:async";
+import "dart:collection";
 import "dart:io";
 
 import "package:logging/logging.dart";
 import "package:restlib_common/collections.dart";
+import "package:restlib_common/collections.immutable.dart";
+import "package:restlib_common/collections.internal.dart";
 import "package:restlib_common/objects.dart";
 import "package:restlib_common/preconditions.dart";
 
