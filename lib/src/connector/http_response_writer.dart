@@ -35,5 +35,8 @@ void writeHttpResponse(final Response response, final HttpResponse serverRespons
   write(HttpHeaders.SERVER, response.server);
   write(HttpHeaders.VARY, response.vary);
   write(HttpHeaders.WARNING, response.warnings);
-  write(HttpHeaders.WWW_AUTHENTICATE, response.authenticationChallenges);  
+  write(HttpHeaders.WWW_AUTHENTICATE, response.authenticationChallenges); 
+  
+  response.customHeaders.forEach((final Pair<Header, dynamic> header) => 
+      write(header.fst.toString(), header.snd));
 }
