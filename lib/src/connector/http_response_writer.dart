@@ -4,10 +4,10 @@ part of restlib.connector.http;
 void writeHttpResponse(final Response response, final HttpResponse serverResponse) {
   final HttpHeaders headers = serverResponse.headers;
   
-  void write(final String header, final value) {
+  void write(final Header header, final value) {
     final String valueAsString = Header.asHeaderValue(value);
     if (valueAsString.isNotEmpty) {
-      headers.add(header, valueAsString);
+      headers.add(header.toString(), valueAsString);
     }
   }
   
@@ -16,27 +16,27 @@ void writeHttpResponse(final Response response, final HttpResponse serverRespons
   response.contentInfo.length.map((final int length) => 
       serverResponse.contentLength = length);
   
-  write(HttpHeaders.ACCEPT_RANGES, response.acceptedRangeUnits);
-  write(HttpHeaders.AGE, response.age);
-  write(HttpHeaders.ALLOW, response.allowedMethods); 
-  write(HttpHeaders.CACHE_CONTROL, response.cacheDirectives);
-  write(HttpHeaders.CONTENT_ENCODING, response.contentInfo.encodings);
-  write(HttpHeaders.CONTENT_LANGUAGE, response.contentInfo.languages);
-  write(HttpHeaders.CONTENT_LOCATION, response.contentInfo.location);
-  write(HttpHeaders.CONTENT_RANGE, response.contentInfo.range);
-  write(HttpHeaders.CONTENT_TYPE, response.contentInfo.mediaRange);
-  write(HttpHeaders.DATE, response.date);
-  write(HttpHeaders.ETAG, response.entityTag);
-  write(HttpHeaders.EXPIRES, response.expires);
-  write(HttpHeaders.LAST_MODIFIED, response.lastModified);
-  write(HttpHeaders.LOCATION, response.location);
-  write(HttpHeaders.PROXY_AUTHENTICATE, response.proxyAuthenticationChallenges);
-  write(HttpHeaders.RETRY_AFTER, response.retryAfter);
-  write(HttpHeaders.SERVER, response.server);
-  write(HttpHeaders.VARY, response.vary);
-  write(HttpHeaders.WARNING, response.warnings);
-  write(HttpHeaders.WWW_AUTHENTICATE, response.authenticationChallenges); 
+  write(Header.ACCEPT_RANGES, response.acceptedRangeUnits);
+  write(Header.AGE, response.age);
+  write(Header.ALLOW, response.allowedMethods); 
+  write(Header.CACHE_CONTROL, response.cacheDirectives);
+  write(Header.CONTENT_ENCODING, response.contentInfo.encodings);
+  write(Header.CONTENT_LANGUAGE, response.contentInfo.languages);
+  write(Header.CONTENT_LOCATION, response.contentInfo.location);
+  write(Header.CONTENT_RANGE, response.contentInfo.range);
+  write(Header.CONTENT_TYPE, response.contentInfo.mediaRange);
+  write(Header.DATE, response.date);
+  write(Header.ENTITY_TAG, response.entityTag);
+  write(Header.EXPIRES, response.expires);
+  write(Header.LAST_MODIFIED, response.lastModified);
+  write(Header.LOCATION, response.location);
+  write(Header.PROXY_AUTHENTICATE, response.proxyAuthenticationChallenges);
+  write(Header.RETRY_AFTER, response.retryAfter);
+  write(Header.SERVER, response.server);
+  write(Header.VARY, response.vary);
+  write(Header.WARNING, response.warnings);
+  write(Header.WWW_AUTHENTICATE, response.authenticationChallenges); 
   
   response.customHeaders.forEach((final Pair<Header, dynamic> header) => 
-      write(header.fst.toString(), header.snd));
+      write(header.fst, header.snd));
 }
