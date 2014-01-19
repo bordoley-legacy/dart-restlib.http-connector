@@ -113,7 +113,7 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
           path: serverRequest.uri.path,
           query: serverRequest.uri.query));
   
-  final Request request = new Request.wrapHeaders(new _HeadersMultimap(serverRequest.headers) , method, requestUri);
+  final Request request = new Request.wrapHeaders(method, requestUri, new _HeadersMultimap(serverRequest.headers));
   
   _logger.finest(request.toString());
   
