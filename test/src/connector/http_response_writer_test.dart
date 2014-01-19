@@ -35,37 +35,35 @@ void httpResponseWriterTestGroup() {
       final ImmutableSet<Warning> warnings =
           Persistent.EMPTY_SET; //FIXME
       
-      final ContentInfo contentInfo =
-          (new ContentInfoBuilder()
-            ..length = contentLength
-            ..location = contentLocation
-            ..mediaRange = contentType
-            ..range = contentRange
-            ..addEncodings(contentEncodings)
-            ..addLanguages(contentLanguages)
-          ).build();
+      final ContentInfo contentInfo = 
+          new ContentInfo(
+              length : contentLength,
+              location : contentLocation,
+              mediaRange : contentType,
+              range : contentRange,
+              encodings : contentEncodings,
+              languages : contentLanguages);
       
       final Response<String> response =
-          (new ResponseBuilder<String>()
-            ..age = age
-            ..contentInfo = contentInfo
-            ..date = date 
-            ..entity = entity
-            ..entityTag = etag
-            ..expires = expires
-            ..lastModified = lastModified
-            ..location = location
-            ..retryAfter = retryAfter
-            ..server = userAgent
-            ..status = status
-            ..addAcceptedRangeUnits(acceptedRangeUnits)
-            ..addAllowedMethods(allowedMethods)
-            ..addAuthenticationChallenges(authenticationChallenges)
-            ..addCacheDirectives(cacheDirectives)
-            ..addProxyAuthenticationChallenges(authenticationChallenges)
-            ..addVaryHeaders(varyHeaders)
-            ..addWarnings(warnings)
-          ).build();
+          new Response(
+              status,
+              acceptedRangeUnits : acceptedRangeUnits,
+              allowedMethods : allowedMethods,
+              age : age,
+              authenticationChallenges :authenticationChallenges,
+              cacheDirectives : cacheDirectives,
+              contentInfo : contentInfo,
+              date : date,
+              entity : entity,
+              entityTag : etag,
+              expires : expires,
+              lastModified : lastModified,
+              location : location,
+              proxyAuthenticationChallenges : authenticationChallenges,
+              retryAfter : retryAfter,
+              server : userAgent,
+              vary : varyHeaders,
+              warnings : warnings);
       
       final Dictionary<String,String> headerToValues =
           new Dictionary<String, String>.wrapMap({

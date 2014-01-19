@@ -14,10 +14,9 @@ void _logError(final e) {
 
 Response _internalServerError(final e) {
   _logError(e);
-  return (new ResponseBuilder()
-    ..status = Status.SERVER_ERROR_INTERNAL
-    ..entity = e
-  ).build();
+  return new Response(
+      Status.SERVER_ERROR_INTERNAL,
+      entity : e);
 }
 
 HttpServerListener httpServerListener(Application applicationSupplier(Request request), final String scheme) =>

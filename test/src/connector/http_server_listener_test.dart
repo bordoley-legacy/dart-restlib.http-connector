@@ -35,11 +35,7 @@ HttpRequest _newHttpRequest() {
 }
 
 Request _requestWithEntity() =>
-  (new RequestBuilder()
-    ..entity=""
-    ..method = Method.GET
-    ..uri = Uri.parse("http://example.com")
-  ).build();
+    new Request(Method.GET, Uri.parse("http://example.com"), entity : "");
 
 void _testProcessRequest(final ApplicationSupplier applicationSupplier, final Status expectedStatus) {
   final HttpRequest httpRequest = _newHttpRequest();
