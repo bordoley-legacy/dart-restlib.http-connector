@@ -7,7 +7,7 @@ void writeHttpResponse(final Response response, final HttpResponse serverRespons
   void write(final Header header, final value) {
     final String valueAsString = Header.asHeaderValue(value);
     if (valueAsString.isNotEmpty) {
-      headers.add(header.toString(), valueAsString);
+      headers.set(header.toString(), valueAsString);
     }
   }
   
