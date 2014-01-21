@@ -63,6 +63,8 @@ void httpServerListenerTestGroup() {
       test("with Resource.handle() method throwing an exception and IOApplication.filterResponse() throwing an exception", () {
         final IOResource resource = 
             new MockIOResource()
+              ..when(callsTo("filterRequest")).alwaysCall((final Request request) => request)
+              ..when(callsTo("filterResponse")).alwaysCall((final Response response) => response)
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysThrow(new Error());
         final Application application =
@@ -89,6 +91,8 @@ void httpServerListenerTestGroup() {
       test("with Resource.handle() method throwing an exception", () {
         final IOResource resource = 
             new MockIOResource()
+              ..when(callsTo("filterRequest")).alwaysCall((final Request request) => request)
+              ..when(callsTo("filterResponse")).alwaysCall((final Response response) => response)
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysThrow(new Error());
 
@@ -101,6 +105,8 @@ void httpServerListenerTestGroup() {
       test("with Resource.handle() method returning a Future.error", () {
         final IOResource resource = 
             new MockIOResource()
+              ..when(callsTo("filterRequest")).alwaysCall((final Request request) => request)
+              ..when(callsTo("filterResponse")).alwaysCall((final Response response) => response)
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysCall((a) => new Future.error(new Error()));
         
@@ -112,6 +118,8 @@ void httpServerListenerTestGroup() {
       test("with Resource.parse() method throwing an exception", () {
         final IOResource resource = 
             new MockIOResource()
+              ..when(callsTo("filterRequest")).alwaysCall((final Request request) => request)
+              ..when(callsTo("filterResponse")).alwaysCall((final Response response) => response)
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysReturn(INFORMATIONAL_CONTINUE)
               ..when(callsTo("parse")).alwaysThrow(new Error());
@@ -124,6 +132,8 @@ void httpServerListenerTestGroup() {
       test("with Resource.parse() method returning a Future.error", () {
         final IOResource resource = 
             new MockIOResource()
+              ..when(callsTo("filterRequest")).alwaysCall((final Request request) => request)
+              ..when(callsTo("filterResponse")).alwaysCall((final Response response) => response)
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysReturn(INFORMATIONAL_CONTINUE)
               ..when(callsTo("parse")).alwaysCall((a,b) => new Future.error(new Error()));
@@ -136,6 +146,8 @@ void httpServerListenerTestGroup() {
       test("with Resource.acceptMessage() method throwing an exception", () {
         final IOResource resource = 
             new MockIOResource()
+              ..when(callsTo("filterRequest")).alwaysCall((final Request request) => request)
+              ..when(callsTo("filterResponse")).alwaysCall((final Response response) => response)
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysReturn(INFORMATIONAL_CONTINUE)
               ..when(callsTo("parse")).alwaysReturn(new Future.value(_requestWithEntity()))
@@ -149,6 +161,8 @@ void httpServerListenerTestGroup() {
       test("with Resource.acceptMessage() method returning a Future.error", () {
         final IOResource resource = 
             new MockIOResource()
+              ..when(callsTo("filterRequest")).alwaysCall((final Request request) => request)
+              ..when(callsTo("filterResponse")).alwaysCall((final Response response) => response)
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysReturn(INFORMATIONAL_CONTINUE)
               ..when(callsTo("parse")).alwaysReturn(new Future.value(_requestWithEntity()))
@@ -162,6 +176,8 @@ void httpServerListenerTestGroup() {
       test("with successful PUT request", () {
         final IOResource resource = 
             new MockIOResource()
+              ..when(callsTo("filterRequest")).alwaysCall((final Request request) => request)
+              ..when(callsTo("filterResponse")).alwaysCall((final Response response) => response)
               ..when(callsTo("get route")).alwaysReturn(route)
               ..when(callsTo("handle")).alwaysReturn(INFORMATIONAL_CONTINUE)
               ..when(callsTo("parse")).alwaysReturn(new Future.value(_requestWithEntity()))

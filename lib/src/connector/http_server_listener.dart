@@ -53,6 +53,7 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
       try {
         request = application.filterRequest(request);
         final IOResource resource = application.route(request);
+        request = resource.filterRequest(request);
         response = resource
             .handle(request)
             .then((final Response response) {
@@ -67,8 +68,11 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
                     return resource.acceptMessage(request);
                   }, onError: (final e) => 
                       CLIENT_ERROR_BAD_REQUEST);
-            }).then(application.filterResponse,
-                onError:(final e) =>  
+            }).then(resource.filterResponse, 
+                onError: (final e) => 
+                    resource.filterResponse(_internalServerError(e)))
+            .then(application.filterResponse,
+                onError: (final e) =>  
                     // Catch any uncaught exceptions in the Future chain.
                     application.filterResponse(_internalServerError(e)))
             .catchError(_internalServerError)

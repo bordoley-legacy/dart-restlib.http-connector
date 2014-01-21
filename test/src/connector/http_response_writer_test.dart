@@ -68,29 +68,29 @@ void httpResponseWriterTestGroup() {
       final Dictionary<String,String> headerToValues =
           new Dictionary<String, String>.wrapMap({
               // FIXME: HttpHeaders.ACCEPT_RANGES : response.acceptedRangeUnits,
-              HttpHeaders.AGE : response.age,
-              HttpHeaders.ALLOW : response.allowedMethods, 
-              HttpHeaders.CACHE_CONTROL : response.cacheDirectives,
+              Header.AGE.toString() : response.age,
+              Header.ALLOW.toString() : response.allowedMethods, 
+              Header.CACHE_CONTROL.toString() : response.cacheDirectives,
               // FIXME: HttpHeaders.CONTENT_ENCODING : response.contentInfo.encodings,
               // FIXME: HttpHeaders.CONTENT_LANGUAGE : response.contentInfo.languages,
-              HttpHeaders.CONTENT_LOCATION : response.contentInfo.location,
+              Header.CONTENT_LOCATION.toString() : response.contentInfo.location,
               // FIXME: HttpHeaders.CONTENT_RANGE : response.contentInfo.range,
-              HttpHeaders.CONTENT_TYPE : response.contentInfo.mediaRange,
+              Header.CONTENT_TYPE.toString() : response.contentInfo.mediaRange,
               // FIXME: HttpHeaders.DATE : response.date,
-              HttpHeaders.ETAG : response.entityTag,
+              Header.ENTITY_TAG.toString() : response.entityTag,
               // FIXME: HttpHeaders.EXPIRES : response.expires,
               // FIXME: HttpHeaders.LAST_MODIFIED : response.lastModified,
-              HttpHeaders.LOCATION : response.location,
-              HttpHeaders.PROXY_AUTHENTICATE : response.proxyAuthenticationChallenges,
+              Header.LOCATION.toString() : response.location,
+              Header.PROXY_AUTHENTICATE.toString() : response.proxyAuthenticationChallenges,
               // FIXME: HttpHeaders.RETRY_AFTER : response.retryAfter,
-              HttpHeaders.SERVER : response.server,
-              HttpHeaders.VARY : response.vary,
+              Header.SERVER.toString() : response.server,
+              Header.VARY.toString() : response.vary,
               // FIXME: HttpHeaders.WARNING : response.warnings,
-              HttpHeaders.WWW_AUTHENTICATE : response.authenticationChallenges}).mapValues(Header.asHeaderValue);
+              Header.WWW_AUTHENTICATE.toString() : response.authenticationChallenges}).mapValues(Header.asHeaderValue);
       
       final MockHttpHeaders httpResponseHeaders =
           new MockHttpHeaders()
-            ..when(callsTo("add"))
+            ..when(callsTo("set"))
               .alwaysCall((final String header, final String value) =>
                   expect(headerToValues[header].value, equals(value)));
       
@@ -101,7 +101,7 @@ void httpResponseWriterTestGroup() {
       writeHttpResponse(response, httpResponse);
       
       headerToValues.keys.forEach((final String key) =>
-          httpResponseHeaders.getLogs(callsTo("add", key, anything)).verify(happenedOnce));
+          httpResponseHeaders.getLogs(callsTo("set", key, anything)).verify(happenedOnce));
     });
   });
 }
