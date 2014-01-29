@@ -10,6 +10,7 @@ import "package:restlib_server/server.dart";
 
 import "package:restlib_core/data.dart";
 import "package:restlib_core/http.dart";
+import "package:restlib_core/net.dart";
 
 import "package:restlib_common/collections.dart";
 import "package:restlib_common/collections.immutable.dart";

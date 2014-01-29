@@ -104,18 +104,17 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
   _logger.finest("Received request from ${serverRequest.connectionInfo.remoteAddress}");
   
   final Method method = new Method.forName(serverRequest.method);
-  
-  // this is terribly hacky, but dart's URI class sucks.
+
   // FIXME: what if host is empty?
   final String host = nullToEmpty(serverRequest.headers.value(HttpHeaders.HOST));
-  final Uri hostPort = Uri.parse("//" + host);
-  final Uri requestUri = new RoutableUri.wrap(
-      new Uri(
-          scheme: scheme,
-          host: hostPort.host, 
-          port: hostPort.port,
-          path: serverRequest.uri.path,
-          query: serverRequest.uri.query));
+  final Authority authority = URI_AUTHORITY_PARSER.parse(host).value;
+  
+  final URI requestUri = new URI(
+      scheme : scheme,
+      authority : authority,
+      path: URI_.parse(serverRequest.uri.path).value.path, // FIXME Kind of hacky
+      query : serverRequest.uri.query);
+  
   
   final Request request = new Request.wrapHeaders(method, requestUri, new _HeadersMultimap(serverRequest.headers));
   

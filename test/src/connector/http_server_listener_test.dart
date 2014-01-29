@@ -31,11 +31,11 @@ HttpRequest _newHttpRequest() {
     ..when(callsTo("get headers")).alwaysReturn(requestHeaders)
     ..when(callsTo("get method")).alwaysReturn(Method.GET.toString())
     ..when(callsTo("get response")).alwaysReturn(httpResponse)
-    ..when(callsTo("get uri")).alwaysReturn(Uri.parse("/test"));
+    ..when(callsTo("get uri")).alwaysReturn(URI_.parse("/test").value);
 }
 
 Request _requestWithEntity() =>
-    new Request(Method.GET, Uri.parse("http://example.com"), entity : "");
+    new Request(Method.GET, URI_.parse("http://example.com").value, entity : "");
 
 void _testProcessRequest(final ApplicationSupplier applicationSupplier, final Status expectedStatus) {
   final HttpRequest httpRequest = _newHttpRequest();

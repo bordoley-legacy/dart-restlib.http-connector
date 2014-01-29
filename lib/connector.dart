@@ -1,7 +1,6 @@
 library restlib.connector.http;
 
 import "dart:async";
-import "dart:collection";
 import "dart:io";
 
 import "package:logging/logging.dart";
@@ -12,6 +11,7 @@ import "package:restlib_common/objects.dart";
 import "package:restlib_common/preconditions.dart";
 
 import "package:restlib_core/http.dart";
+import "package:restlib_core/net.dart";
 import "package:restlib_server/server.dart";
 import "package:restlib_server/io.dart";
 
