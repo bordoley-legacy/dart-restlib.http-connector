@@ -107,7 +107,7 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
 
   // FIXME: what if host is empty?
   final String host = nullToEmpty(serverRequest.headers.value(HttpHeaders.HOST));
-  final Authority authority = URI_AUTHORITY_PARSER.parse(host).value;
+  final Authority authority = AUTHORITY.parse(host).value;
   
   final URI requestUri = new URI(
       scheme : scheme,
