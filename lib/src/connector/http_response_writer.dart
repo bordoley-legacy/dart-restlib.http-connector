@@ -24,7 +24,7 @@ void writeHttpResponse(final Response response, final HttpResponse serverRespons
   write(Header.CONTENT_LANGUAGE, response.contentInfo.languages);
   write(Header.CONTENT_LOCATION, response.contentInfo.location);
   write(Header.CONTENT_RANGE, response.contentInfo.range);
-  write(Header.CONTENT_TYPE, response.contentInfo.mediaRange);
+  write(Header.CONTENT_TYPE, response.contentInfo.mediaRange);  
   write(Header.DATE, response.date);
   write(Header.ENTITY_TAG, response.entityTag);
   write(Header.EXPIRES, response.expires);
@@ -33,6 +33,10 @@ void writeHttpResponse(final Response response, final HttpResponse serverRespons
   write(Header.PROXY_AUTHENTICATE, response.proxyAuthenticationChallenges);
   write(Header.RETRY_AFTER, response.retryAfter);
   write(Header.SERVER, response.server);
+  
+  response.setCookies.forEach((final SetCookie setCookie) =>
+      write(Header.SET_COOKIE, setCookie));
+  
   write(Header.VARY, response.vary);
   write(Header.WARNING, response.warnings);
   write(Header.WWW_AUTHENTICATE, response.authenticationChallenges); 
