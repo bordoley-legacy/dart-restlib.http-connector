@@ -10,7 +10,7 @@ void httpResponseWriterTestGroup() {
           Persistent.EMPTY_SET.addAll([Method.GET, Method.PUT]);
       final ImmutableSet<ChallengeMessage> authenticationChallenges =
           Persistent.EMPTY_SET.add(
-              CHALLENGE_MESSAGE.parse("basic realm=\"test\", encoding=\"UTF-8\"").value);
+              CHALLENGE_MESSAGE.parseValue("basic realm=\"test\", encoding=\"UTF-8\""));
       final ImmutableSet<CacheDirective> cacheDirectives =
           Persistent.EMPTY_SET.add(CacheDirective.MAX_STALE);
       final ImmutableSequence<ContentEncoding> contentEncodings =
@@ -18,7 +18,7 @@ void httpResponseWriterTestGroup() {
       final ImmutableSequence<Language> contentLanguages =
           Persistent.EMPTY_SEQUENCE; // FIXME      
       final int contentLength = 10;
-      final URI contentLocation = URI_.parse("htt://www.example.com").value;
+      final URI contentLocation = URI_.parseValue("htt://www.example.com");
       final ContentRange contentRange = null; // FIXME
       final MediaRange contentType = MediaRange.APPLICATION_ATOM;
       final DateTime date = null; // FIXME:
@@ -26,9 +26,9 @@ void httpResponseWriterTestGroup() {
       final EntityTag etag = new EntityTag.strong("abc");
       final DateTime expires = null; // FIXME:
       final DateTime lastModified = null; // FIXME
-      final URI location = URI_.parse("www.example.com").value;
+      final URI location = URI_.parseValue("www.example.com");
       final DateTime retryAfter = null; // FIXME
-      final UserAgent userAgent = USER_AGENT.parse("test/1.1").value;
+      final UserAgent userAgent = USER_AGENT.parseValue("test/1.1");
       final Status status = Status.CLIENT_ERROR_BAD_REQUEST;
       final ImmutableSet<Header> varyHeaders =
           Persistent.EMPTY_SET.addAll([Header.ACCEPT, Header.CONTENT_TYPE]);

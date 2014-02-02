@@ -103,11 +103,13 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
   
   _logger.finest("Received request from ${serverRequest.connectionInfo.remoteAddress}");
   
+  // FIXME: This show block needs to be try catched.
   final Method method = new Method.forName(serverRequest.method);
 
   // FIXME: what if host is empty?
+  
   final String host = nullToEmpty(serverRequest.headers.value(HttpHeaders.HOST));
-  final Authority authority = AUTHORITY.parse(host).value;
+  final Authority authority = AUTHORITY.parseValue(host);
   
   final URI requestUri = new URI(
       scheme : scheme,

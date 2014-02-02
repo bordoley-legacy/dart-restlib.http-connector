@@ -35,7 +35,7 @@ HttpRequest _newHttpRequest() {
 }
 
 Request _requestWithEntity() =>
-    new Request(Method.GET, URI_.parse("http://example.com").value, entity : "");
+    new Request(Method.GET, URI_.parseValue("http://example.com"), entity : "");
 
 void _testProcessRequest(final ApplicationSupplier applicationSupplier, final Status expectedStatus) {
   final HttpRequest httpRequest = _newHttpRequest();
@@ -48,7 +48,7 @@ void _testProcessRequest(final ApplicationSupplier applicationSupplier, final St
 
 ApplicationSupplier _applicationSupplierFor(final IOResource resource) =>
     (final Request request) =>
-        new Application([resource]);
+        new Application(Router.EMPTY.add(resource));
 
 void httpServerListenerTestGroup() {
   group("class:RequestProcessor", () {
