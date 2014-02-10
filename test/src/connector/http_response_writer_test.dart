@@ -20,7 +20,7 @@ void httpResponseWriterTestGroup() {
       final int contentLength = 10;
       final URI contentLocation = URI_.parseValue("htt://www.example.com");
       final ContentRange contentRange = null; // FIXME
-      final MediaRange contentType = MediaRange.APPLICATION_ATOM;
+      final MediaRange contentType = APPLICATION_ATOM_XML;
       final DateTime date = null; // FIXME:
       final String entity = "hello";
       final EntityTag etag = new EntityTag.strong("abc");

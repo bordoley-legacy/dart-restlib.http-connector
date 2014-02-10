@@ -9,6 +9,7 @@ import "package:restlib_server/io.dart";
 import "package:restlib_server/server.dart";
 
 import "package:restlib_core/data.dart";
+import "package:restlib_core/data.mediaranges.dart";
 import "package:restlib_core/http.dart";
 import "package:restlib_core/net.dart";
 
