@@ -139,7 +139,7 @@ class _HeadersMultimap extends MultimapBase<Header, String, Sequence<String>> im
     dictionary = new _HeadersDictionary(headers);
   
   Sequence<String> get emptyValueContainer =>
-      Persistent.EMPTY_SEQUENCE;
+      EMPTY_SEQUENCE;
 }
 
 class _HeadersDictionary extends DictionaryBase<Header, Sequence<String>> {
@@ -153,7 +153,7 @@ class _HeadersDictionary extends DictionaryBase<Header, Sequence<String>> {
   
   Iterable<Header> get keys =>
     computeIfNull(_keys, (){
-      ImmutableSet<Header> keys = Persistent.EMPTY_SET;
+      ImmutableSet<Header> keys = EMPTY_SET;
       
       headers.forEach((final String key, final List<String> values) {
         HEADER.parse(key).map((final Header header) {

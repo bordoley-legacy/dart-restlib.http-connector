@@ -5,18 +5,18 @@ void httpResponseWriterTestGroup() {
     test("with fully composed Response", () {
       final int age = 10;
       final ImmutableSet<RangeUnit> acceptedRangeUnits =
-          Persistent.EMPTY_SET; // FIXME:
+          EMPTY_SET; // FIXME:
       final ImmutableSet<Method> allowedMethods = 
-          Persistent.EMPTY_SET.addAll([Method.GET, Method.PUT]);
+          EMPTY_SET.addAll([Method.GET, Method.PUT]);
       final ImmutableSet<ChallengeMessage> authenticationChallenges =
-          Persistent.EMPTY_SET.add(
+          EMPTY_SET.add(
               CHALLENGE_MESSAGE.parseValue("basic realm=\"test\", encoding=\"UTF-8\""));
       final ImmutableSet<CacheDirective> cacheDirectives =
-          Persistent.EMPTY_SET.add(CacheDirective.MAX_STALE);
+          EMPTY_SET.add(CacheDirective.MAX_STALE);
       final ImmutableSequence<ContentEncoding> contentEncodings =
-          Persistent.EMPTY_SEQUENCE; // FIXME
+          EMPTY_SEQUENCE; // FIXME
       final ImmutableSequence<Language> contentLanguages =
-          Persistent.EMPTY_SEQUENCE; // FIXME      
+          EMPTY_SEQUENCE; // FIXME      
       final int contentLength = 10;
       final URI contentLocation = URI_.parseValue("htt://www.example.com");
       final ContentRange contentRange = null; // FIXME
@@ -31,9 +31,9 @@ void httpResponseWriterTestGroup() {
       final UserAgent userAgent = USER_AGENT.parseValue("test/1.1");
       final Status status = Status.CLIENT_ERROR_BAD_REQUEST;
       final ImmutableSet<Header> varyHeaders =
-          Persistent.EMPTY_SET.addAll([Header.ACCEPT, Header.CONTENT_TYPE]);
+          EMPTY_SET.addAll([Header.ACCEPT, Header.CONTENT_TYPE]);
       final ImmutableSet<Warning> warnings =
-          Persistent.EMPTY_SET; //FIXME
+          EMPTY_SET; //FIXME
       
       final ContentInfo contentInfo = 
           new ContentInfo(
