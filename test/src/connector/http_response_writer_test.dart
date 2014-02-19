@@ -6,17 +6,17 @@ void httpResponseWriterTestGroup() {
       final int age = 10;
       final ImmutableSet<RangeUnit> acceptedRangeUnits =
           EMPTY_SET; // FIXME:
-      final ImmutableSet<Method> allowedMethods = 
+      final ImmutableSet<Method> allowedMethods =
           EMPTY_SET.addAll([Method.GET, Method.PUT]);
       final ImmutableSet<ChallengeMessage> authenticationChallenges =
           EMPTY_SET.add(
-              CHALLENGE_MESSAGE.parseValue("basic realm=\"test\", encoding=\"UTF-8\""));
+              ChallengeMessage.parse("basic realm=\"test\", encoding=\"UTF-8\""));
       final ImmutableSet<CacheDirective> cacheDirectives =
           EMPTY_SET.add(CacheDirective.MAX_STALE);
       final ImmutableSequence<ContentEncoding> contentEncodings =
           EMPTY_SEQUENCE; // FIXME
       final ImmutableSequence<Language> contentLanguages =
-          EMPTY_SEQUENCE; // FIXME      
+          EMPTY_SEQUENCE; // FIXME
       final int contentLength = 10;
       final URI contentLocation = URI_.parseValue("htt://www.example.com");
       final ContentRange contentRange = null; // FIXME
@@ -28,14 +28,14 @@ void httpResponseWriterTestGroup() {
       final DateTime lastModified = null; // FIXME
       final URI location = URI_.parseValue("www.example.com");
       final DateTime retryAfter = null; // FIXME
-      final UserAgent userAgent = USER_AGENT.parseValue("test/1.1");
+      final UserAgent userAgent = UserAgent.parse("test/1.1");
       final Status status = Status.CLIENT_ERROR_BAD_REQUEST;
       final ImmutableSet<Header> varyHeaders =
           EMPTY_SET.addAll([Header.ACCEPT, Header.CONTENT_TYPE]);
       final ImmutableSet<Warning> warnings =
           EMPTY_SET; //FIXME
-      
-      final ContentInfo contentInfo = 
+
+      final ContentInfo contentInfo =
           new ContentInfo(
               length : contentLength,
               location : contentLocation,
@@ -43,7 +43,7 @@ void httpResponseWriterTestGroup() {
               range : contentRange,
               encodings : contentEncodings,
               languages : contentLanguages);
-      
+
       final Response<String> response =
           new Response(
               status,
@@ -64,12 +64,12 @@ void httpResponseWriterTestGroup() {
               server : userAgent,
               vary : varyHeaders,
               warnings : warnings);
-      
+
       final Dictionary<String,String> headerToValues =
           new Dictionary<String, String>.wrapMap({
               // FIXME: HttpHeaders.ACCEPT_RANGES : response.acceptedRangeUnits,
               Header.AGE.toString() : response.age,
-              Header.ALLOW.toString() : response.allowedMethods, 
+              Header.ALLOW.toString() : response.allowedMethods,
               Header.CACHE_CONTROL.toString() : response.cacheDirectives,
               // FIXME: HttpHeaders.CONTENT_ENCODING : response.contentInfo.encodings,
               // FIXME: HttpHeaders.CONTENT_LANGUAGE : response.contentInfo.languages,
@@ -87,19 +87,19 @@ void httpResponseWriterTestGroup() {
               Header.VARY.toString() : response.vary,
               // FIXME: HttpHeaders.WARNING : response.warnings,
               Header.WWW_AUTHENTICATE.toString() : response.authenticationChallenges}).mapValues(Header.asHeaderValue);
-      
+
       final MockHttpHeaders httpResponseHeaders =
           new MockHttpHeaders()
             ..when(callsTo("set"))
               .alwaysCall((final String header, final String value) =>
                   expect(headerToValues[header].value, equals(value)));
-      
-      final HttpResponse httpResponse = 
+
+      final HttpResponse httpResponse =
           new MockHttpResponse()
-            ..when(callsTo("get headers")).alwaysReturn(httpResponseHeaders);     
-      
+            ..when(callsTo("get headers")).alwaysReturn(httpResponseHeaders);
+
       writeHttpResponse(response, httpResponse);
-      
+
       headerToValues.keys.forEach((final String key) =>
           httpResponseHeaders.getLogs(callsTo("set", key, anything)).verify(happenedOnce));
     });
