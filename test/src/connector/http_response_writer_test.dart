@@ -10,7 +10,7 @@ void httpResponseWriterTestGroup() {
           EMPTY_SET.addAll([Method.GET, Method.PUT]);
       final ImmutableSet<ChallengeMessage> authenticationChallenges =
           EMPTY_SET.add(
-              ChallengeMessage.parse("basic realm=\"test\", encoding=\"UTF-8\""));
+              ChallengeMessage.parser.parseValue("basic realm=\"test\", encoding=\"UTF-8\""));
       final ImmutableSet<CacheDirective> cacheDirectives =
           EMPTY_SET.add(CacheDirective.MAX_STALE);
       final ImmutableSequence<ContentEncoding> contentEncodings =
@@ -28,7 +28,7 @@ void httpResponseWriterTestGroup() {
       final DateTime lastModified = null; // FIXME
       final URI location = URI_.parseValue("www.example.com");
       final DateTime retryAfter = null; // FIXME
-      final UserAgent userAgent = UserAgent.parse("test/1.1");
+      final UserAgent userAgent = UserAgent.parser.parseValue("test/1.1");
       final Status status = Status.CLIENT_ERROR_BAD_REQUEST;
       final ImmutableSet<Header> varyHeaders =
           EMPTY_SET.addAll([Header.ACCEPT, Header.CONTENT_TYPE]);

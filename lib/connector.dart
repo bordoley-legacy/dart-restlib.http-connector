@@ -14,7 +14,6 @@ import "package:restlib_core/data.dart";
 import "package:restlib_core/http.dart";
 import "package:restlib_core/http.future_responses.dart";
 import "package:restlib_core/net.dart";
-import "package:restlib_server/server.dart";
 import "package:restlib_server/io.dart";
 
 part "src/connector/http_response_writer.dart";
