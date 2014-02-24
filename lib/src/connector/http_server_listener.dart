@@ -111,12 +111,12 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
   // FIXME: what if host is empty?
 
   final String host = nullToEmpty(serverRequest.headers.value(HttpHeaders.HOST));
-  final Authority authority = AUTHORITY.parseValue(host);
+  final Authority authority = Authority.parser.parseValue(host);
 
   final URI requestUri = new URI(
       scheme : scheme,
       authority : authority,
-      path: URI_.parse(serverRequest.uri.path).value.path, // FIXME Kind of hacky
+      path: URI.parser.parse(serverRequest.uri.path).value.path, // FIXME Kind of hacky
       query : serverRequest.uri.query);
 
 
@@ -158,7 +158,7 @@ class _HeadersDictionary extends DictionaryBase<Header, Sequence<String>> {
       ImmutableSet<Header> keys = EMPTY_SET;
 
       headers.forEach((final String key, final List<String> values) {
-        HEADER.parse(key).map((final Header header) {
+        Header.parser.parse(key).map((final Header header) {
           keys = keys.add(header);
         });
       });

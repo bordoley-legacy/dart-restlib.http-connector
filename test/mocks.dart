@@ -4,6 +4,7 @@ import "dart:io";
 
 import "package:unittest/mock.dart";
 
+import "package:restlib_common/collections.dart";
 import "package:restlib_server/io.dart";
 import "package:restlib_server/server.dart";
 
@@ -38,6 +39,9 @@ class MockIOResource extends Mock implements IOResource {
 }
 
 class MockRoute extends Mock implements Route {
+  Option<String> call(int index) =>
+      this[index];
+
   dynamic noSuchMethod(Invocation invocation) =>
       super.noSuchMethod(invocation);
 }

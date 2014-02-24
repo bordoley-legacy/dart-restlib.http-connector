@@ -18,7 +18,7 @@ void httpResponseWriterTestGroup() {
       final ImmutableSequence<Language> contentLanguages =
           EMPTY_SEQUENCE; // FIXME
       final int contentLength = 10;
-      final URI contentLocation = URI_.parseValue("htt://www.example.com");
+      final URI contentLocation = URI.parser.parseValue("htt://www.example.com");
       final ContentRange contentRange = null; // FIXME
       final MediaRange contentType = APPLICATION_ATOM_XML;
       final DateTime date = null; // FIXME:
@@ -26,12 +26,12 @@ void httpResponseWriterTestGroup() {
       final EntityTag etag = new EntityTag.strong("abc");
       final DateTime expires = null; // FIXME:
       final DateTime lastModified = null; // FIXME
-      final URI location = URI_.parseValue("www.example.com");
+      final URI location = URI.parser.parseValue("www.example.com");
       final DateTime retryAfter = null; // FIXME
       final UserAgent userAgent = UserAgent.parser.parseValue("test/1.1");
       final Status status = Status.CLIENT_ERROR_BAD_REQUEST;
       final ImmutableSet<Header> varyHeaders =
-          EMPTY_SET.addAll([Header.ACCEPT, Header.CONTENT_TYPE]);
+          EMPTY_SET.addAll([ACCEPT, CONTENT_TYPE]);
       final ImmutableSet<Warning> warnings =
           EMPTY_SET; //FIXME
 
@@ -68,25 +68,25 @@ void httpResponseWriterTestGroup() {
       final Dictionary<String,String> headerToValues =
           new Dictionary<String, String>.wrapMap({
               // FIXME: HttpHeaders.ACCEPT_RANGES : response.acceptedRangeUnits,
-              Header.AGE.toString() : response.age,
-              Header.ALLOW.toString() : response.allowedMethods,
-              Header.CACHE_CONTROL.toString() : response.cacheDirectives,
+              AGE.toString() : response.age,
+              ALLOW.toString() : response.allowedMethods,
+              CACHE_CONTROL.toString() : response.cacheDirectives,
               // FIXME: HttpHeaders.CONTENT_ENCODING : response.contentInfo.encodings,
               // FIXME: HttpHeaders.CONTENT_LANGUAGE : response.contentInfo.languages,
-              Header.CONTENT_LOCATION.toString() : response.contentInfo.location,
+              CONTENT_LOCATION.toString() : response.contentInfo.location,
               // FIXME: HttpHeaders.CONTENT_RANGE : response.contentInfo.range,
-              Header.CONTENT_TYPE.toString() : response.contentInfo.mediaRange,
+              CONTENT_TYPE.toString() : response.contentInfo.mediaRange,
               // FIXME: HttpHeaders.DATE : response.date,
-              Header.ENTITY_TAG.toString() : response.entityTag,
+              ENTITY_TAG.toString() : response.entityTag,
               // FIXME: HttpHeaders.EXPIRES : response.expires,
               // FIXME: HttpHeaders.LAST_MODIFIED : response.lastModified,
-              Header.LOCATION.toString() : response.location,
-              Header.PROXY_AUTHENTICATE.toString() : response.proxyAuthenticationChallenges,
+              LOCATION.toString() : response.location,
+              PROXY_AUTHENTICATE.toString() : response.proxyAuthenticationChallenges,
               // FIXME: HttpHeaders.RETRY_AFTER : response.retryAfter,
-              Header.SERVER.toString() : response.server,
-              Header.VARY.toString() : response.vary,
+              SERVER.toString() : response.server,
+              VARY.toString() : response.vary,
               // FIXME: HttpHeaders.WARNING : response.warnings,
-              Header.WWW_AUTHENTICATE.toString() : response.authenticationChallenges}).mapValues(Header.asHeaderValue);
+              WWW_AUTHENTICATE.toString() : response.authenticationChallenges}).mapValues(asHeaderValue);
 
       final MockHttpHeaders httpResponseHeaders =
           new MockHttpHeaders()
