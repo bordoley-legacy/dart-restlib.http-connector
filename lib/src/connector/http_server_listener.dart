@@ -106,7 +106,7 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
   _logger.finest("Received request from ${serverRequest.connectionInfo.remoteAddress}");
 
   // FIXME: This show block needs to be try catched.
-  final Method method = new Method.forName(serverRequest.method);
+  final Method method = new Method(serverRequest.method);
 
   // FIXME: what if host is empty?
 

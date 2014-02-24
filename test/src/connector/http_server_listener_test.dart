@@ -29,13 +29,13 @@ HttpRequest _newHttpRequest() {
     ..when(callsTo("get connectionInfo")).alwaysReturn(httpConnectionInfo)
     ..when(callsTo("get contentLength")).alwaysReturn(10)
     ..when(callsTo("get headers")).alwaysReturn(requestHeaders)
-    ..when(callsTo("get method")).alwaysReturn(Method.GET.toString())
+    ..when(callsTo("get method")).alwaysReturn(GET.toString())
     ..when(callsTo("get response")).alwaysReturn(httpResponse)
     ..when(callsTo("get uri")).alwaysReturn(URI.parser.parseValue("/test"));
 }
 
 Request _requestWithEntity() =>
-    new Request(Method.GET, URI.parser.parseValue("http://example.com"), entity : "");
+    new Request(GET, URI.parser.parseValue("http://example.com"), entity : "");
 
 void _testProcessRequest(final ApplicationSupplier applicationSupplier, final Status expectedStatus) {
   final HttpRequest httpRequest = _newHttpRequest();

@@ -7,7 +7,7 @@ void httpResponseWriterTestGroup() {
       final ImmutableSet<RangeUnit> acceptedRangeUnits =
           EMPTY_SET; // FIXME:
       final ImmutableSet<Method> allowedMethods =
-          EMPTY_SET.addAll([Method.GET, Method.PUT]);
+          EMPTY_SET.addAll([GET, PUT]);
       final ImmutableSet<ChallengeMessage> authenticationChallenges =
           EMPTY_SET.add(
               ChallengeMessage.parser.parseValue("basic realm=\"test\", encoding=\"UTF-8\""));
