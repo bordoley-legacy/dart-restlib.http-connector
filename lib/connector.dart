@@ -14,6 +14,7 @@ import "package:restlib_core/data.dart";
 import "package:restlib_core/http.dart";
 import "package:restlib_core/http.future_responses.dart";
 import "package:restlib_core/http.headers.dart";
+import "package:restlib_core/http.statuses.dart" as Status;
 import "package:restlib_core/net.dart";
 import "package:restlib_server/io.dart";
 

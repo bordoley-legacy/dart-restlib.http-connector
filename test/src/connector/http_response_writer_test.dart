@@ -29,7 +29,7 @@ void httpResponseWriterTestGroup() {
       final URI location = URI.parser.parseValue("www.example.com");
       final DateTime retryAfter = null; // FIXME
       final UserAgent userAgent = UserAgent.parser.parseValue("test/1.1");
-      final Status status = Status.CLIENT_ERROR_BAD_REQUEST;
+      final Status status = Statuses.CLIENT_ERROR_BAD_REQUEST;
       final ImmutableSet<Header> varyHeaders =
           EMPTY_SET.addAll([ACCEPT, CONTENT_TYPE]);
       final ImmutableSet<Warning> warnings =

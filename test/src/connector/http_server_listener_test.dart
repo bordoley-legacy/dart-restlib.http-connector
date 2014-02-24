@@ -58,7 +58,7 @@ void httpServerListenerTestGroup() {
             ..when(callsTo("matches")).alwaysReturn(true);
 
       test("with Application supplier throwing exception", () =>
-          _testProcessRequest((final Request request) => throw new Error(), Status.SERVER_ERROR_INTERNAL));
+          _testProcessRequest((final Request request) => throw new Error(), Statuses.SERVER_ERROR_INTERNAL));
 
       test("with Resource.handle() method throwing an exception and IOApplication.filterResponse() throwing an exception", () {
         final IOResource resource =
@@ -74,7 +74,7 @@ void httpServerListenerTestGroup() {
               ..when(callsTo("filterResponse")).alwaysThrow(new Error())
               ..when(callsTo("get writeError")).alwaysReturn(writeString);
 
-        _testProcessRequest((final Request request) => application, Status.SERVER_ERROR_INTERNAL);
+        _testProcessRequest((final Request request) => application, Statuses.SERVER_ERROR_INTERNAL);
       });
 
       test("with successful GET request", () {
@@ -85,7 +85,7 @@ void httpServerListenerTestGroup() {
 
         final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource);
 
-        _testProcessRequest(applicationSupplier, Status.SUCCESS_OK);
+        _testProcessRequest(applicationSupplier, Statuses.SUCCESS_OK);
       });
 
       test("with Resource.handle() method throwing an exception", () {
@@ -98,7 +98,7 @@ void httpServerListenerTestGroup() {
 
         final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource);
 
-        _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
+        _testProcessRequest(applicationSupplier, Statuses.SERVER_ERROR_INTERNAL);
       });
 
 
@@ -112,7 +112,7 @@ void httpServerListenerTestGroup() {
 
         final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource);
 
-        _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
+        _testProcessRequest(applicationSupplier, Statuses.SERVER_ERROR_INTERNAL);
       });
 
       test("with Resource.parse() method throwing an exception", () {
@@ -126,7 +126,7 @@ void httpServerListenerTestGroup() {
 
         final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource);
 
-        _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
+        _testProcessRequest(applicationSupplier, Statuses.SERVER_ERROR_INTERNAL);
       });
 
       test("with Resource.parse() method returning a Future.error", () {
@@ -140,7 +140,7 @@ void httpServerListenerTestGroup() {
 
         final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource);
 
-        _testProcessRequest(applicationSupplier, Status.CLIENT_ERROR_BAD_REQUEST);
+        _testProcessRequest(applicationSupplier, Statuses.CLIENT_ERROR_BAD_REQUEST);
       });
 
       test("with Resource.acceptMessage() method throwing an exception", () {
@@ -155,7 +155,7 @@ void httpServerListenerTestGroup() {
 
         final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource);
 
-        _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
+        _testProcessRequest(applicationSupplier, Statuses.SERVER_ERROR_INTERNAL);
       });
 
       test("with Resource.acceptMessage() method returning a Future.error", () {
@@ -170,7 +170,7 @@ void httpServerListenerTestGroup() {
 
         final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource);
 
-        _testProcessRequest(applicationSupplier, Status.SERVER_ERROR_INTERNAL);
+        _testProcessRequest(applicationSupplier, Statuses.SERVER_ERROR_INTERNAL);
       });
 
       test("with successful PUT request", () {
@@ -185,7 +185,7 @@ void httpServerListenerTestGroup() {
 
         final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource);
 
-        _testProcessRequest(applicationSupplier, Status.SUCCESS_OK);
+        _testProcessRequest(applicationSupplier, Statuses.SUCCESS_OK);
       });
     });
   });
