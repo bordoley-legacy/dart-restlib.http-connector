@@ -94,7 +94,7 @@ void httpResponseWriterTestGroup() {
               .alwaysCall((final String header, final String value) =>
                   expect(headerToValues[header].value, equals(value)));
 
-      final HttpResponse httpResponse =
+      final dartIO.HttpResponse httpResponse =
           new MockHttpResponse()
             ..when(callsTo("get headers")).alwaysReturn(httpResponseHeaders);
 

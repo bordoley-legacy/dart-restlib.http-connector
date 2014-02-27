@@ -7,23 +7,23 @@ class _SettableMockHttpResponse extends MockHttpResponse {
 
 const String _SCHEME = "https";
 
-HttpRequest _newHttpRequest() {
-  final HttpConnectionInfo httpConnectionInfo =
+dartIO.HttpRequest _newHttpRequest() {
+  final dartIO.HttpConnectionInfo httpConnectionInfo =
       new MockHttpConnectionInfo()
-        ..when(callsTo("get remoteAddress")).alwaysReturn(InternetAddress.LOOPBACK_IP_V4);
+        ..when(callsTo("get remoteAddress")).alwaysReturn(dartIO.InternetAddress.LOOPBACK_IP_V4);
 
-  final HttpHeaders responseHeaders =
+  final dartIO.HttpHeaders responseHeaders =
       new MockHttpHeaders()
         ..when(callsTo("add"));
 
-  final HttpResponse httpResponse =
+  final dartIO.HttpResponse httpResponse =
       new MockHttpResponse()
         ..when(callsTo("get headers")).alwaysReturn(responseHeaders);
 
-  final HttpHeaders requestHeaders =
+  final dartIO.HttpHeaders requestHeaders =
       new MockHttpHeaders()
         ..when(callsTo("value")).alwaysCall((final String header) =>
-            {HttpHeaders.HOST : "www.example.com"}[header]);
+            {dartIO.HttpHeaders.HOST : "www.example.com"}[header]);
 
   return new MockHttpRequest()
     ..when(callsTo("get connectionInfo")).alwaysReturn(httpConnectionInfo)
@@ -38,7 +38,7 @@ Request _requestWithEntity() =>
     new Request(GET, URI.parser.parseValue("http://example.com"), entity : "");
 
 void _testProcessRequest(final ApplicationSupplier applicationSupplier, final Status expectedStatus) {
-  final HttpRequest httpRequest = _newHttpRequest();
+  final dartIO.HttpRequest httpRequest = _newHttpRequest();
   final Future result = processRequest(httpRequest, applicationSupplier, _SCHEME);
   expectOnCompletion(result, (_) =>
       (httpRequest.response as Mock)

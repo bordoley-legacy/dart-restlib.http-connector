@@ -1,7 +1,7 @@
 library restlib.connector_test;
 
 import "dart:async";
-import "dart:io";
+import "dart:io" as dartIO;
 
 import "package:restlib_http_connector/connector.dart";
 
@@ -34,6 +34,6 @@ void connectorTestGroups() {
   httpResponseWriterTestGroup();
 }
 
-main() {
+void main() {
   connectorTestGroups();
 }

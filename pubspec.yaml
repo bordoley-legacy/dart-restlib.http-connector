@@ -2,6 +2,8 @@ name: restlib_http_connector
 description: library for binding restlib applications to dart's HTTP server
 dependencies:
   logging: any
+  restlib_client:
+    git: https://code.google.com/p/dart-restlib.client/
   restlib_common:
     git: https://code.google.com/p/dart-restlib.common/
   restlib_core:
