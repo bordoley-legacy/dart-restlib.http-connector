@@ -1,10 +1,12 @@
 part of restlib.connector.http;
 
-httpclient.HttpClient createHttpClient(final httpclient.RequestWriterProvider requestWriterProvider,
-                          final httpclient.ResponseParserProvider responseParserProvider) =>
+RestClient createHttpClient(final RequestWriterProvider requestWriterProvider,
+                          final ResponseParserProvider responseParserProvider) =>
     new _DartIOHttpClient(requestWriterProvider, responseParserProvider);
 
-class _DartIOHttpClient {
+
+
+class _DartIOHttpClient implements RestClient {
   static void writeHeader(final HttpHeaders headers, final Header header, final value) {
     final String headerValue = asHeaderValue(value);
     if (value.isNotEmpty) {
@@ -43,8 +45,8 @@ class _DartIOHttpClient {
   }
 
   final HttpClient _client;
-  final httpclient.RequestWriterProvider _requestWriterProvider;
-  final httpclient.ResponseParserProvider _responseParserProvider;
+  final RequestWriterProvider _requestWriterProvider;
+  final ResponseParserProvider _responseParserProvider;
 
   _DartIOHttpClient(this._requestWriterProvider, this._responseParserProvider) :
     _client = new HttpClient() {
@@ -63,7 +65,7 @@ class _DartIOHttpClient {
           return request.entity
               .map((final entity) =>
                   _requestWriterProvider(request)
-                    .map((final httpclient.RequestWriter requestWriter) {
+                    .map((final RequestWriter requestWriter) {
                       final Request requestWithContentInfo = requestWriter.withContentInfo(request);
 
                       writeHeaders(headers, requestWithContentInfo);
@@ -81,7 +83,7 @@ class _DartIOHttpClient {
           final Response response = new Response.wrapHeaders(status, new _HeadersMultimap(httpResponse.headers));
 
           return _responseParserProvider(response.contentInfo)
-            .map((final httpclient.ResponseParser responseParser) =>
+            .map((final ResponseParser responseParser) =>
                 responseParser(response, httpResponse))
             .orElse(response);
         });
