@@ -1,16 +1,12 @@
 part of restlib.connector.http;
 
+final RestClient<Stream<List<int>>, Stream<List<int>>> dartIOStreamHttpClient = dartIOHttpClient(
+      (_) => const Option.constant(const _StreamRequestWriter()),
+      (_) => const Option.constant(_streamResponseParser));
+
 RestClient dartIOHttpClient(final RequestWriterProvider requestWriterProvider,
                           final ResponseParserProvider responseParserProvider) =>
     new _DartIOHttpClient(requestWriterProvider, responseParserProvider);
-
-RestClient<Stream<List<int>>, Stream<List<int>>> dartIOStreamHttpClient() {
-  const RequestWriter writer = const _StreamRequestWriter();
-
-  return dartIOHttpClient(
-      (_) => const Option.constant(writer),
-      (_) => const Option.constant(_streamResponseParser));
-}
 
 class _StreamRequestWriter implements RequestWriter<Stream<List<int>>> {
   const _StreamRequestWriter();
