@@ -13,13 +13,6 @@ RestClient<Stream<int>, Stream<int>> dartIOStreamHttpClient() {
 }
 
 class _DartIOHttpClient<TReq, TRes> implements RestClient<TReq, TRes> {
-  static void writeHeader(final HttpHeaders headers, final Header header, final value) {
-    final String headerValue = asHeaderValue(value);
-    if (value.isNotEmpty) {
-      headers.add(header.toString(), headerValue);
-    }
-  }
-
   final HttpClient _client;
   final RequestWriterProvider _requestWriterProvider;
   final ResponseParserProvider _responseParserProvider;
