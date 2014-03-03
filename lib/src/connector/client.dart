@@ -4,13 +4,26 @@ RestClient dartIOHttpClient(final RequestWriterProvider requestWriterProvider,
                           final ResponseParserProvider responseParserProvider) =>
     new _DartIOHttpClient(requestWriterProvider, responseParserProvider);
 
-RestClient<Stream<int>, Stream<int>> dartIOStreamHttpClient() {
-  Future<Response<Stream<int>>> responseParser(final Response response, final Stream<List<int>> msgStream) =>
-      new Future.value(response.with_(entity: msgStream));
+RestClient<Stream<List<int>>, Stream<List<int>>> dartIOStreamHttpClient() {
+  const RequestWriter writer = const _StreamRequestWriter();
 
-  return dartIOHttpClient(null,
-      (_) => new Option(responseParser));
+  return dartIOHttpClient(
+      (_) => const Option.constant(writer),
+      (_) => const Option.constant(_streamResponseParser));
 }
+
+class _StreamRequestWriter implements RequestWriter<Stream<List<int>>> {
+  const _StreamRequestWriter();
+
+  Request withContentInfo(final Request<Stream<List<int>>> request) =>
+      request;
+
+  Future write(final Request<Stream<List<int>>> request, StreamSink<List<int>> msgSink) =>
+      msgSink.addStream(request.entity.value);
+}
+
+Future<Response<Stream<int>>> _streamResponseParser(final Response response, final Stream<List<int>> msgStream) =>
+    new Future.value(response.with_(entity: msgStream));
 
 class _DartIOHttpClient<TReq, TRes> implements RestClient<TReq, TRes> {
   final HttpClient _client;
