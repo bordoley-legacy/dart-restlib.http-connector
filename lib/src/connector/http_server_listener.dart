@@ -28,8 +28,7 @@ HttpServerListener httpServerListener(Application applicationSupplier(Request re
           onError: _logError);
     };
 
-@visibleForTesting
-void writeHttpResponse(final Response response, final HttpResponse serverResponse) {
+void _writeHttpResponse(final Response response, final HttpResponse serverResponse) {
   final HttpHeaders headers = serverResponse.headers;
 
   serverResponse.statusCode = response.status.code;
@@ -51,7 +50,7 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
 
     _logger.finest(response.toString());
 
-    writeHttpResponse(response, serverRequest.response);
+    _writeHttpResponse(response, serverRequest.response);
 
     if (response.entity.isNotEmpty) {
       return write(request, response, serverRequest.response);

@@ -1,10 +1,10 @@
 part of restlib.connector.http;
 
-final RestClient<Stream<List<int>>, Stream<List<int>>> dartIOStreamHttpClient = dartIOHttpClient(
+final RestClient<Stream<List<int>>, Stream<List<int>>> streamHttpClient = httpClient(
       (_) => const Option.constant(const _StreamRequestWriter()),
       (_) => const Option.constant(_streamResponseParser));
 
-RestClient dartIOHttpClient(final RequestWriterProvider requestWriterProvider,
+RestClient httpClient(final RequestWriterProvider requestWriterProvider,
                           final ResponseParserProvider responseParserProvider) =>
     new _DartIOHttpClient(requestWriterProvider, responseParserProvider);
 
