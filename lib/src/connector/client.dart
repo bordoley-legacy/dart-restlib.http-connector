@@ -1,47 +1,23 @@
 part of restlib.connector.http;
 
-RestClient createHttpClient(final RequestWriterProvider requestWriterProvider,
+RestClient dartIOHttpClient(final RequestWriterProvider requestWriterProvider,
                           final ResponseParserProvider responseParserProvider) =>
     new _DartIOHttpClient(requestWriterProvider, responseParserProvider);
 
+RestClient<Stream<int>, Stream<int>> dartIOStreamHttpClient() {
+  Future<Response<Stream<int>>> responseParser(final Response response, final Stream<List<int>> msgStream) =>
+      new Future.value(response.with_(entity: msgStream));
 
+  return dartIOHttpClient(null,
+      (_) => new Option(responseParser));
+}
 
-class _DartIOHttpClient implements RestClient {
+class _DartIOHttpClient<TReq, TRes> implements RestClient<TReq, TRes> {
   static void writeHeader(final HttpHeaders headers, final Header header, final value) {
     final String headerValue = asHeaderValue(value);
     if (value.isNotEmpty) {
       headers.add(header.toString(), headerValue);
     }
-  }
-
-  static void writeHeaders(final HttpHeaders headers, final Request request) {
-    writeHeader(headers, AUTHORIZATION, request.authorizationCredentials);
-    writeHeader(headers, CACHE_CONTROL, request.cacheDirectives);
-    writeHeader(headers, CONTENT_ENCODING, request.contentInfo.encodings);
-    writeHeader(headers, CONTENT_LANGUAGE, request.contentInfo.languages);
-    writeHeader(headers, CONTENT_LENGTH, request.contentInfo.length);
-    writeHeader(headers, CONTENT_LOCATION, request.contentInfo.location);
-    writeHeader(headers, CONTENT_TYPE, request.contentInfo.mediaRange);
-    writeHeader(headers, CONTENT_RANGE, request.contentInfo.range);
-    writeHeader(headers, COOKIE, request.cookies);
-    writeHeader(headers, EXPECT, request.expectations);
-    writeHeader(headers, PRAGMA, request.pragmaCacheDirectives);
-    writeHeader(headers, IF_MATCH, request.preconditions.ifMatch);
-    writeHeader(headers, IF_MODIFIED_SINCE, request.preconditions.ifModifiedSince);
-    writeHeader(headers, IF_NONE_MATCH, request.preconditions.ifNoneMatch);
-    writeHeader(headers, IF_RANGE, request.preconditions.ifRange.map((final Either<EntityTag, DateTime> ifRange) => ifRange.value));
-    writeHeader(headers, IF_UNMODIFIED_SINCE, request.preconditions.ifUnmodifiedSince);
-    writeHeader(headers, ACCEPT_CHARSET, request.preferences.acceptedCharsets);
-    writeHeader(headers, ACCEPT_ENCODING, request.preferences.acceptedEncodings);
-    writeHeader(headers, ACCEPT_LANGUAGE, request.preferences.acceptedLanguages);
-    writeHeader(headers, ACCEPT, request.preferences.acceptedMediaRanges);
-    writeHeader(headers, RANGE, request.preferences.range);
-    writeHeader(headers, PROXY_AUTHORIZATION, request.proxyAuthorizationCredentials);
-    writeHeader(headers, REFERER, request.referer);
-    writeHeader(headers, USER_AGENT, request.userAgent);
-
-    request.customHeaders.forEach((final Pair<Header, dynamic> header) =>
-        writeHeader(headers, header.fst, header.snd));
   }
 
   final HttpClient _client;
@@ -53,7 +29,7 @@ class _DartIOHttpClient implements RestClient {
     //_client.findProxy = HttpClient.findProxyFromEnvironment;
   }
 
-  Future<Response> call(final Request request) =>
+  Future<Response<TRes>> call(final Request<TReq> request) =>
       _client
         .open(request.method.toString(),
             request.uri.authority.value.host.value.toString(),
@@ -61,6 +37,11 @@ class _DartIOHttpClient implements RestClient {
             request.uri.path.toString())
         .then((final HttpClientRequest httpRequest) {
           final HttpHeaders headers = httpRequest.headers;
+          // FIXME: Zero out the default headers set by the connector.
+
+          void writeHeaders(final Request request) =>
+              writeRequestHeaders(request, (final String header, final String value) =>
+                  headers.add(header, value));
 
           return request.entity
               .map((final entity) =>
@@ -68,12 +49,12 @@ class _DartIOHttpClient implements RestClient {
                     .map((final RequestWriter requestWriter) {
                       final Request requestWithContentInfo = requestWriter.withContentInfo(request);
 
-                      writeHeaders(headers, requestWithContentInfo);
+                      writeHeaders(requestWithContentInfo);
                       return requestWriter.write(requestWithContentInfo, httpRequest);
                     }).orCompute(() =>
                         throw new StateError("Not RequestWriter available for entity")))
               .orCompute(() {
-                writeHeaders(headers, request);
+                writeHeaders(request);
                 return new Future.value();
               }).then((_) => httpRequest.close());
 
