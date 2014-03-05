@@ -1,4 +1,4 @@
-part of restlib.connector.http;
+part of connector.http;
 
 class _HeadersMultimap extends MultimapBase<Header, String, Sequence<String>> implements SequenceMultimap<Header,String> {
   Dictionary<Header, Sequence<String>> dictionary;

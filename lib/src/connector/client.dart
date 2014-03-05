@@ -1,4 +1,4 @@
-part of restlib.connector.http;
+part of connector.http;
 
 final RestClient<Stream<List<int>>, Stream<List<int>>> streamHttpClient = httpClient(
       (_) => const Option.constant(const _StreamRequestWriter()),

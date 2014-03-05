@@ -1,4 +1,4 @@
-library restlib.connector.http;
+library connector.http;
 
 import "dart:async";
 import "dart:io";

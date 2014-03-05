@@ -1,4 +1,4 @@
-part of restlib.connector.http;
+part of connector.http;
 
 typedef HttpServerListener(HttpServer);
 
