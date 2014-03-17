@@ -24,7 +24,7 @@ class _HeadersDictionary extends DictionaryBase<Header, Sequence<String>> {
       ImmutableSet<Header> keys = EMPTY_SET;
 
       headers.forEach((final String key, final List<String> values) {
-        Header.parser.parse(key).map((final Header header) {
+        Header.parser.parse(key).left.map((final Header header) {
           keys = keys.add(header);
         });
       });
