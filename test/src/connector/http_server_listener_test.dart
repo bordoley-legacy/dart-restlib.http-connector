@@ -138,7 +138,7 @@ void httpServerListenerTestGroup() {
 
         final ApplicationSupplier applicationSupplier = _applicationSupplierFor(resource);
 
-        _testProcessRequest(applicationSupplier, Statuses.CLIENT_ERROR_BAD_REQUEST);
+        _testProcessRequest(applicationSupplier, Statuses.SERVER_ERROR_INTERNAL);
       });
 
       test("with Resource.acceptMessage() method throwing an exception", () {

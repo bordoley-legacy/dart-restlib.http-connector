@@ -93,10 +93,7 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
                     .map((_) =>
                         resource.acceptMessage(request))
                     .orElse(CLIENT_ERROR_BAD_REQUEST);
-
-              // FIXME: Maybe parse should return Either<Request, ParseException> or Option
-              }, onError: (final e) =>
-                  CLIENT_ERROR_BAD_REQUEST);
+              });
         }).then(resource.filterResponse,
             onError: (final e) =>
                 resource.filterResponse(internalServerError(e)));
