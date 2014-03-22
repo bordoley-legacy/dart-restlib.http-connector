@@ -93,7 +93,10 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
                     .map((_) =>
                         resource.acceptMessage(request))
                     .orElse(CLIENT_ERROR_BAD_REQUEST);
-              });
+
+              // FIXME: Maybe parse should return Either<Request, ParseException> or Option
+              }, onError: (final e) =>
+                  CLIENT_ERROR_BAD_REQUEST);
         }).then(resource.filterResponse,
             onError: (final e) =>
                 resource.filterResponse(internalServerError(e)));
@@ -113,12 +116,14 @@ Future processRequest(final HttpRequest serverRequest, Application applicationSu
   }
 
   Try<Future> tryApplicationProcessRequest(final Request request, final Application application) =>
-      try_(() => applicationProcessRequest(request, application))
+      try_(() =>
+          applicationProcessRequest(request, application))
         .catchError((e, final StackTrace st) =>
             writeResponse(request,internalServerError(e), application.writeError));
 
   Try<Future> tryProcessRequest(final Request request) =>
-      try_(() => applicationSupplier(request))
+      try_(() =>
+          applicationSupplier(request))
         .then(curry1(tryApplicationProcessRequest, [request]),
           onError: (e, StackTrace st) =>
               // FIXME: Ideally the server application would still be able to mutate the response

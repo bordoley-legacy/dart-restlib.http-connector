@@ -31,7 +31,7 @@ dartIO.HttpRequest _newHttpRequest() {
     ..when(callsTo("get headers")).alwaysReturn(requestHeaders)
     ..when(callsTo("get method")).alwaysReturn(GET.toString())
     ..when(callsTo("get response")).alwaysReturn(httpResponse)
-    ..when(callsTo("get uri")).alwaysReturn(URI.parser.parseValue("/test"));
+    ..when(callsTo("get uri")).alwaysReturn(URI.parser.parseValue("/test").toUri());
 }
 
 Request _requestWithEntity() =>
@@ -53,9 +53,7 @@ ApplicationSupplier _applicationSupplierFor(final IOResource resource) =>
 void httpServerListenerTestGroup() {
   group("class:RequestProcessor", () {
     group("processRequest()", () {
-      final Route route =
-          new MockRoute()
-            ..when(callsTo("matches")).alwaysReturn(true);
+      final Route route = Route.parser.parseValue("/*");
 
       test("with Application supplier throwing exception", () =>
           _testProcessRequest((final Request request) => throw new Error(), Statuses.SERVER_ERROR_INTERNAL));
