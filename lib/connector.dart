@@ -18,6 +18,7 @@ import "package:restlib_core/http.future_responses.dart";
 import "package:restlib_core/http.statuses.dart" as statuses;
 import "package:restlib_core/net.dart";
 import "package:restlib_server/io.dart";
+import "package:restlib_server/server.dart";
 
 part "src/connector/client.dart";
 part "src/connector/headers_multimap.dart";
