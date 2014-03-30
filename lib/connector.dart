@@ -1,6 +1,7 @@
 library connector.http;
 
 import "dart:async";
+import "dart:collection";
 import "dart:io";
 
 import "package:logging/logging.dart";

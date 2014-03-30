@@ -20,9 +20,11 @@ void main() {
     final Option<int> port = uri.authority.value.port;
 
     if (uri.scheme == "http") {
-      return io.Socket.connect(host, port.orElse(80));
+      return io.RawSocket.connect(host, port.orElse(80))
+          .then((final io.RawSocket socket) => new ClientConnection(socket));
     } else if (uri.scheme == "https") {
-      return io.Socket.connect(host, port.orElse(443));
+      return io.RawSecureSocket.connect(host, port.orElse(443))
+          .then((final io.RawSocket socket) => new ClientConnection(socket));
     } else {
       throw new ArgumentError("invalid scheme: $uri.scheme");
     }

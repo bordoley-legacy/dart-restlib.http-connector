@@ -1,50 +1,51 @@
 part of connector.http_1_1;
 
-typedef Future<Socket> SocketProvider(URI authority);
+typedef Future<ClientConnection> ClientConnectionProvider(URI authority);
 
 // FIXME: Provide a higher level abstraction class for following redirects, max redirects, etc.
 
 class Http_1_1_Client<TReq, TRes> {
-  final SocketProvider _socketProvider;
+  final ClientConnectionProvider _connectionProvider;
 
-  Http_1_1_Client(this._socketProvider);
+  Http_1_1_Client(this._connectionProvider);
 
   RequestHandle<TRes> call(Request<TRes> request) =>
-      new _RequestHandle(request, _socketProvider);
+      new _RequestHandle(request, _connectionProvider);
 }
 
 class _RequestHandle implements RequestHandle<Stream<List<int>>> {
   final Request<Stream<List<int>>> request;
-  final SocketProvider socketProvider;
+  final ClientConnectionProvider connectionProvider;
   final StreamController<RequestStateEvent> requestStateStreamController;
 
-  Option<Socket> _socket = Option.NONE;
+  Option<ClientConnection> _connection = Option.NONE;
   Future<Response<Stream<List<int>>>> _result = null;
 
-  _RequestHandle(this.request, this.socketProvider)
+  _RequestHandle(this.request, this.connectionProvider)
       : this.requestStateStreamController = new StreamController();
 
   Future<Response<Stream<List<int>>>> _start() =>
-      socketProvider(request.uri).then((final Socket socket) {
-        this._socket = new Option(socket);
+      connectionProvider(request.uri).then((final ClientConnection connection) {
+        this._connection = new Option(connection);
 
         requestStateStreamController.add(RequestStateEvent.CONNECTION_ESTABLISHED);
 
-        socket.add(request.without(entity: true).toString().codeUnits);
+        connection.add(request.without(entity: true).toString().codeUnits);
         requestStateStreamController.add(RequestStateEvent.HEADERS_SENT);
 
         return request.expectations[Expectation.EXPECTS_100_CONTINUE]
-          .map((_) => parseResponse(socket))
+          .map((_) => parseResponse(connection))
           .orCompute(() =>
               new Future.value(
-                  statuses.INFORMATIONAL_CONTINUE.toResponse().with_(entity: socket)))
+                  statuses.INFORMATIONAL_CONTINUE.toResponse().with_(entity: connection)))
           .then((final Response<Stream<List<int>>> response) {
             if (response.status != statuses.INFORMATIONAL_CONTINUE) {
               return response;
             }
 
             request.entity.map((final Stream<List<int>> entityStream) =>
-                socket.addStream(entityStream));
+                connection.addStream(entityStream).forEach((final int count) =>
+                    requestStateStreamController.add(new RequestStateEvent.dataSent(count))));
 
             return parseResponse(response.entity.value)
                 .then((final Response<Stream<List<int>>> response) =>
@@ -76,7 +77,7 @@ class _RequestHandle implements RequestHandle<Stream<List<int>>> {
       });
 
   Future cancel() =>
-      _socket
-        .map((final Socket socket) => socket.close())
+      _connection
+        .map((final ClientConnection connection) => connection.close())
         .orCompute(() => throw new StateError("no socket"));
 }
